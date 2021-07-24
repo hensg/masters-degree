@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message Parametros {
+    double a = 1;
+    double b = 2;
+    string operacao = 3;
+}
+
+message Resultado {
+    double valor = 1;
+}
+
+service Calculadora {
+    
+    rpc Calcule(Parametros) returns (Resultado) {};
+
+}

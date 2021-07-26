@@ -4,8 +4,8 @@ Rodar o comand `kafka-downloader.sh`.
 
 
 "kafka/": link simbólico que contém o código para a execução de um servidor Kafka.
-"kafka-python-producer/": contém o código para a execução de um produtor Kafka escrito em Python
-"kafka-python-consumer/": contém o código para a execução de um consumidor Kafka escrito em Python
+"kafka-python-producer/": execução de um produtor Kafka escrito em Python
+"kafka-python-consumer/": execução de um consumidor Kafka escrito em Python
 
 
 ## Zookeeper
@@ -35,7 +35,7 @@ O comando acima deve iniciar um nó de Kafka server na porta 9092.
 Com o servidor Kafka rodando, iremos criar um tópico que irá armazenar "page_views" dos usuários que estão acessando as páginas de um site por exemplo.
 ```
 $ cd kafka/
-$ bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --topic page_views --partitions 5 --replication-factor 1
+$ bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --topic pageviews --partitions 1 --replication-factor 1
 ```
 ## Kafka Producer
 

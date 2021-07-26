@@ -1,17 +1,19 @@
 from confluent_kafka import Consumer
 import time
+import sys
 
-conf = {
-    'bootstrap.servers': "localhost:9092",
-    'group.id': 'sample',
-    'auto.offset.reset': 'earliest', # latest
-    'enable.auto.commit': True
-}
 
-def run():
+def run(consumer_id):
+    conf = {
+        'bootstrap.servers': "localhost:9092,localhost:9093",
+        'group.id': 'pc',
+        'group.instance.id': consumer_id,
+        'auto.offset.reset': 'earliest', # latest
+        'enable.auto.commit': True
+    }
     consumer = Consumer(conf)
     try:
-        consumer.subscribe(["page_views"])
+        consumer.subscribe(["pageviews"])
 
         running = True
         while(running):
@@ -21,9 +23,10 @@ def run():
                 partition = msg.partition()
                 offset = msg.offset()
                 print("topic=%s, partition=%s, offset=%s, msg=%s" % (topic, partition, offset, msg.value()))
+                time.sleep(2)
     finally:
         consumer.close()
 
 
 if __name__ == '__main__':
-    run()
+    run(sys.argv[1])

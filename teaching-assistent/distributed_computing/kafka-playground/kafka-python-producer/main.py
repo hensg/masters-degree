@@ -1,11 +1,7 @@
 from confluent_kafka import Producer
+
 import socket
 import time
-
-conf = {
-    'bootstrap.servers': "localhost:9092",
-    'client.id': socket.gethostname()
-}
 
 def callback(err, msg):
     if err is not None:
@@ -15,13 +11,17 @@ def callback(err, msg):
 
 def run():
     try:
+        conf = {
+            'bootstrap.servers': "localhost:9092,localhost:9093",
+            'client.id': socket.gethostname()
+        }
         producer = Producer(conf)
 
         while(True):
             user_id = 1
-            value = 'view_time=%d,user_id=%d' % (int(time.time()), user_id)
+            value = 'view_time=%d,user_id=%d,page_id=%s' % (int(time.time()), user_id, '/asdj')
 
-            producer.produce(topic="page_views", key="page_id", value=value, callback=callback)
+            producer.produce(topic="pageviews", key=(str(time.time())), value=value, callback=callback)
             producer.poll(1)
             time.sleep(1)
     finally:

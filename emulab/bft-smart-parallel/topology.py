@@ -44,6 +44,8 @@ for i in range(params.n):
     node = request.RawPC('Node'+(i+1))
     node.hardware_type = params.t
     #node.disk_image = "urn:publicid:IDN+emulab.net+image+ScalableSMR//BFT-SMaRt-PCheckpointD430";
+    node.addService(rspec.Install(url="https://raw.githubusercontent.com/hensg/masters-degree/main/emulab/bft-smart-parallel/mount_disks.sh", path="/local"))
+    node.addService(rspec.Execute(shell="bash", command="/local/mount_disks.sh"))
     iface = node.addInterface('eth0', pg.IPv4Address('10.1.1.'+(i+2),'255.255.255.0'))
     iface.bandwidth = 10000000
     link_lan0.addInterface(iface)

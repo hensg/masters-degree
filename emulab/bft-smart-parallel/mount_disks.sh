@@ -1,25 +1,16 @@
 #!/bin/bash
 
-sudo apt update
-apt install openjdk-8-jre-headless
+disks=`lsblk | grep ^sd | grep -v sda | awk '{print $1}'` 
+i=0
 
-for i in {0..1}
+for disk in disks
 do
 	sudo mkdir /checkpoint$i/ 
 	sudo chmod 777 /checkpoint$i/	
+    sudo mkfs.ext4 /dev/$disk
+    sudo mount /dev/$disk /checkpoint$i/
+	sudo mkdir /checkpoint$i/states/
+	sudo mkdir /checkpoint$i/metadata/
+	sudo chmod 777 -R /checkpoint$i/
+    $i = $i + 1
 done
-
-sudo mkfs.ext4 /dev/sdb
-sudo mount /dev/sdb /checkpoint0/
-sudo mkfs.ext4 /dev/sdc
-sudo mount /dev/sdc /checkpoint1/
-sudo mkfs.ext4 /dev/sdd
-
-for j in {0..1}
-do
-	sudo mkdir /checkpoint$j/states/
-	sudo mkdir /checkpoint$j/metadata/
-	sudo chmod 777 -R /checkpoint$j/
-done
-repid=$1
-export repid 
